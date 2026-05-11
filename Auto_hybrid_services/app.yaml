@@ -1,0 +1,24 @@
+runtime: nodejs20
+
+env: standard
+
+entrypoint: node server/index.js
+
+env_variables:
+  NODE_ENV: "production"
+
+handlers:
+- url: /.*
+  script: auto
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 10
+
+# Cloud Build config for automatic deployments
+# Remove if you don't need it
+skip_files:
+  - "^node_modules$"
+  - "^\.git.*"
+  - "^\.env.*"
+  - "^client/node_modules.*"
