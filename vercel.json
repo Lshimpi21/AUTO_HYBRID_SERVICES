@@ -1,8 +1,45 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "build",
-  "framework": "create-react-app",
+  "outputDirectory": "client/build",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=60"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ],
   "env": {
-    "REACT_APP_API_URL": "@REACT_APP_API_URL"
+    "REACT_APP_API_URL": "@react_app_api_url"
   }
 }

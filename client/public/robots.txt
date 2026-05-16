@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /services
+Allow: /api/
+Disallow: /admin
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://auto-hybrid-services-shop.app/sitemap.xml

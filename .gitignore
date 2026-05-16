@@ -1,12 +1,28 @@
-node_modules
+# Dependencies
+node_modules/
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
-build
-dist
+
+# Production
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 .DS_Store
+
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Firebase
+firebase-debug.log
+
+# Misc
+.cache/

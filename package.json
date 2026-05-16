@@ -1,39 +1,30 @@
 {
-  "name": "auto-hybrid-services",
+  "name": "auto-hybrid-services-shop",
   "version": "1.0.0",
-  "description": "Auto Hybrid Services Application",
-  "private": true,
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "axios": "^1.4.0"
-  },
+  "description": "Auto Hybrid Services Shop - Professional car repair and maintenance services",
+  "type": "module",
+  "main": "server/index.js",
   "scripts": {
-    "dev": "react-scripts start",
-    "start": "serve -s build -l 3000",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node server/index.js",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "start": "node server/index.js",
+    "install:all": "npm install && cd client && npm install",
+    "vercel-build": "cd client && npm run build"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase-admin": "^13.9.0",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "serve": "^14.1.2"
+    "concurrently": "^8.2.1",
+    "gh-pages": "^6.3.0",
+    "nodemon": "^3.0.1"
   }
 }
