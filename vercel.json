@@ -1,5 +1,4 @@
 {
-  "buildCommand": "sh -c 'npm install && cd client && npm ci && npm run build'",
   "outputDirectory": "client/build",
   "rewrites": [
     {
