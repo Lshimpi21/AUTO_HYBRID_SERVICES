@@ -10,7 +10,7 @@ import OrderHistory from './pages/OrderHistory';
 import './App.css';
 
 // Set API base URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://auto-hybrid-services-shop.app/api';
 window.API_BASE_URL = API_BASE_URL;
 
 function App() {
