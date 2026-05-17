@@ -9,6 +9,6 @@ cd client
 npm ci
 
 echo "Building React app..."
-npm run build
+npx react-scripts build
 
 echo "Build complete!"
