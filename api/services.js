@@ -37,49 +37,75 @@ export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader('Content-Type', 'application/json');
 
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
 
-  // Get all services
-  if (req.method === 'GET') {
-    res.status(200).json(services);
-  }
-  // Add new service
-  else if (req.method === 'POST') {
-    const { name, description, price, category, duration, icon, rating } = req.body;
-    const newService = {
-      id: Date.now().toString(),
-      name,
-      description,
-      price,
-      category,
-      duration,
-      icon,
-      rating: rating || 4.5,
-    };
-    services.push(newService);
-    res.status(201).json(newService);
-  }
-  // Update service
-  else if (req.method === 'PUT') {
-    const { id } = req.query;
-    const serviceIndex = services.findIndex(s => s.id === id);
-    if (serviceIndex === -1) {
-      return res.status(404).json({ error: 'Service not found' });
+  try {
+    // Get all services
+    if (req.method === 'GET') {
+      res.status(200).json(services);
     }
-    services[serviceIndex] = { ...services[serviceIndex], ...req.body };
-    res.status(200).json(services[serviceIndex]);
-  }
-  // Delete service
-  else if (req.method === 'DELETE') {
-    const { id } = req.query;
-    services = services.filter(s => s.id !== id);
-    res.status(200).json({ success: true });
-  }
-  else {
-    res.status(405).json({ error: 'Method not allowed' });
+    // Add new service
+    else if (req.method === 'POST') {
+      const { name, description, price, category, duration, icon, rating } = req.body;
+      
+      if (!name || !price || !category) {
+        return res.status(400).json({ error: 'Missing required fields: name, price, category' });
+      }
+      
+      const newService = {
+        id: Date.now().toString(),
+        name,
+        description: description || '',
+        price: Number(price),
+        category,
+        duration: duration || '',
+        icon: icon || '🔧',
+        rating: rating ? Number(rating) : 4.5,
+      };
+      services.push(newService);
+      res.status(201).json(newService);
+    }
+    // Update service
+    else if (req.method === 'PUT') {
+      const { id } = req.query;
+      if (!id) {
+        return res.status(400).json({ error: 'Service ID is required' });
+      }
+      
+      const serviceIndex = services.findIndex(s => s.id === id);
+      if (serviceIndex === -1) {
+        return res.status(404).json({ error: 'Service not found' });
+      }
+      
+      services[serviceIndex] = { ...services[serviceIndex], ...req.body };
+      res.status(200).json(services[serviceIndex]);
+    }
+    // Delete service
+    else if (req.method === 'DELETE') {
+      const { id } = req.query;
+      if (!id) {
+        return res.status(400).json({ error: 'Service ID is required' });
+      }
+      
+      const initialLength = services.length;
+      services = services.filter(s => s.id !== id);
+      
+      if (services.length === initialLength) {
+        return res.status(404).json({ error: 'Service not found' });
+      }
+      
+      res.status(200).json({ success: true, message: 'Service deleted' });
+    }
+    else {
+      res.status(405).json({ error: 'Method not allowed' });
+    }
+  } catch (error) {
+    console.error('API Error:', error);
+    res.status(500).json({ error: 'Internal server error', details: error.message });
   }
 }
