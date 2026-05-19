@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaEdit, FaTrash, FaPlus, FaCheckCircle } from 'react-icons/fa';
 
 function ServiceManagement() {
+  const formatPrice = (price) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(price) || 0);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -24,7 +25,7 @@ function ServiceManagement() {
 
   const fetchServices = async () => {
     try {
-      const apiUrl = window.API_BASE_URL || 'http://localhost:5000/api';
+      const apiUrl = window.API_BASE_URL || '/api';
       const response = await axios.get(`${apiUrl}/services`);
       setServices(response.data);
     } catch (error) {
@@ -59,11 +60,12 @@ function ServiceManagement() {
     }
 
     try {
-      const apiUrl = window.API_BASE_URL || 'http://localhost:5000/api';
+      const apiUrl = window.API_BASE_URL || '/api';
+      const payload = { ...formData, price: Number(formData.price) || 0 };
       if (editingId) {
-        await axios.put(`${apiUrl}/services/${editingId}`, formData);
+        await axios.put(`${apiUrl}/services/${editingId}`, payload);
       } else {
-        await axios.post(`${apiUrl}/services`, formData);
+        await axios.post(`${apiUrl}/services`, payload);
       }
 
       setSuccess(true);
@@ -161,7 +163,7 @@ function ServiceManagement() {
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">Price ($) *</label>
+                  <label className="block text-gray-700 font-semibold mb-2">Price (INR) *</label>
                   <input
                     type="number"
                     name="price"
@@ -252,7 +254,7 @@ function ServiceManagement() {
                 <tr key={service.id} className="border-t hover:bg-gray-50">
                   <td className="px-6 py-4 font-semibold">{service.name}</td>
                   <td className="px-6 py-4">{service.category}</td>
-                  <td className="px-6 py-4 font-semibold text-blue-600">${service.price}</td>
+                  <td className="px-6 py-4 font-semibold text-blue-600">{formatPrice(service.price)}</td>
                   <td className="px-6 py-4">{service.duration}</td>
                   <td className="px-6 py-4 flex gap-3">
                     <button

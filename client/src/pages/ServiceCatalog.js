@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaShoppingCart, FaFilter } from 'react-icons/fa';
+import { FaShoppingCart } from 'react-icons/fa';
 import './ServiceCatalog.css';
 
 function ServiceCatalog({ cart, setCart }) {
+  const formatPrice = (price) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(price) || 0);
   const [services, setServices] = useState([]);
   const [filteredServices, setFilteredServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ function ServiceCatalog({ cart, setCart }) {
 
   const fetchServices = async () => {
     try {
-      const apiUrl = window.API_BASE_URL || 'http://localhost:5000/api';
+      const apiUrl = window.API_BASE_URL || '/api';
       const response = await axios.get(`${apiUrl}/services`);
       setServices(response.data);
       setFilteredServices(response.data);
@@ -99,7 +100,7 @@ function ServiceCatalog({ cart, setCart }) {
                 <p className="text-gray-600 text-sm mb-4">{service.description}</p>
 
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-2xl font-bold text-blue-600">${service.price}</span>
+                  <span className="text-2xl font-bold text-blue-600">{formatPrice(service.price)}</span>
                   <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded">
                     {service.duration}
                   </span>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { FaTools, FaShoppingCart, FaHome, FaCog, FaMapMarkerAlt } from 'react-icons/fa';
 import Landing from './pages/Landing';
@@ -10,12 +10,39 @@ import OrderHistory from './pages/OrderHistory';
 import './App.css';
 
 // Set API base URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://auto-hybrid-services-shop.app/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || '/api';
 window.API_BASE_URL = API_BASE_URL;
+const ADMIN_PASSWORD = 'admin123';
 
 function App() {
   const [cart, setCart] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [adminPasswordInput, setAdminPasswordInput] = useState('');
+  const [adminError, setAdminError] = useState('');
+
+  const handleAdminButton = () => {
+    if (isAdmin) {
+      setIsAdmin(false);
+      setShowAdminLogin(false);
+      setAdminPasswordInput('');
+      setAdminError('');
+    } else {
+      setShowAdminLogin(true);
+    }
+  };
+
+  const handleAdminLogin = (e) => {
+    e.preventDefault();
+    if (adminPasswordInput === ADMIN_PASSWORD) {
+      setIsAdmin(true);
+      setShowAdminLogin(false);
+      setAdminPasswordInput('');
+      setAdminError('');
+    } else {
+      setAdminError('Invalid password. Please try again.');
+    }
+  };
 
   return (
     <Router>
@@ -54,10 +81,10 @@ function App() {
                   <span>Vinayak Nagar, Pimple Nilakh, Pune 411027</span>
                 </div>
                 <button
-                  onClick={() => setIsAdmin(!isAdmin)}
+                  onClick={handleAdminButton}
                   className="flex items-center gap-2 bg-blue-700 px-4 py-2 rounded hover:bg-blue-600 transition"
                 >
-                  <FaCog /> {isAdmin ? 'User Mode' : 'Admin'}
+                  <FaCog /> {isAdmin ? 'Logout Admin' : 'Admin'}
                 </button>
               </div>
             </div>
@@ -88,6 +115,48 @@ function App() {
             >
               Manage Services
             </Link>
+          </div>
+        )}
+
+        {showAdminLogin && (
+          <div className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8">
+              <h2 className="text-3xl font-bold mb-4">Admin Login</h2>
+              <p className="mb-4 text-gray-600">Enter the admin password to edit services.</p>
+              <form onSubmit={handleAdminLogin} className="space-y-4">
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">Password</label>
+                  <input
+                    type="password"
+                    value={adminPasswordInput}
+                    onChange={(e) => setAdminPasswordInput(e.target.value)}
+                    className="w-full border-2 border-gray-300 rounded px-4 py-3 focus:outline-none focus:border-blue-500"
+                    placeholder="Enter admin password"
+                    required
+                  />
+                </div>
+                {adminError && <p className="text-red-600">{adminError}</p>}
+                <div className="flex justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowAdminLogin(false);
+                      setAdminPasswordInput('');
+                      setAdminError('');
+                    }}
+                    className="px-5 py-3 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+                  >
+                    Login
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </div>

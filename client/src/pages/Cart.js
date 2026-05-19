@@ -4,13 +4,14 @@ import { FaTrash, FaCheckCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 function Cart({ cart, setCart }) {
+  const formatPrice = (price) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(price) || 0);
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [notes, setNotes] = useState('');
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice = cart.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
 
   const removeFromCart = (cartId) => {
     setCart(cart.filter(item => item.cartId !== cartId));
@@ -34,7 +35,7 @@ function Cart({ cart, setCart }) {
         notes
       };
 
-      const apiUrl = window.API_BASE_URL || 'http://localhost:5000/api';
+      const apiUrl = window.API_BASE_URL || '/api';
       await axios.post(`${apiUrl}/orders`, orderData);
       setOrderPlaced(true);
       setCart([]);
@@ -97,7 +98,7 @@ function Cart({ cart, setCart }) {
                       <p className="text-gray-600">{item.description}</p>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="text-xl font-bold text-blue-600">${item.price}</span>
+                      <span className="text-xl font-bold text-blue-600">{formatPrice(item.price)}</span>
                       <button
                         onClick={() => removeFromCart(item.cartId)}
                         className="text-red-500 hover:text-red-700 text-lg transition"
@@ -119,11 +120,11 @@ function Cart({ cart, setCart }) {
               <div className="mb-6 pb-6 border-b">
                 <div className="flex justify-between mb-2">
                   <span>Subtotal:</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>{formatPrice(totalPrice)}</span>
                 </div>
                 <div className="flex justify-between text-2xl font-bold text-blue-600">
                   <span>Total:</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>{formatPrice(totalPrice)}</span>
                 </div>
               </div>
 

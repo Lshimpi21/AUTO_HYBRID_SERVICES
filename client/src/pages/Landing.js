@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaPhone, FaStar, FaCheckCircle, FaTools, FaClock, FaMapMarkerAlt, FaWrench, FaGraduationCap, FaTrophy, FaEnvelope } from 'react-icons/fa';
+import { FaPhone, FaStar, FaCheckCircle, FaTools, FaClock, FaMapMarkerAlt, FaWrench, FaTrophy, FaEnvelope } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa';
 import './Landing.css';
 
@@ -12,9 +12,11 @@ function Landing() {
     fetchServices();
   }, []);
 
+  const formatPrice = (price) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(price) || 0);
+
   const fetchServices = async () => {
     try {
-      const apiUrl = window.API_BASE_URL || 'http://localhost:5000/api';
+      const apiUrl = window.API_BASE_URL || '/api';
       const response = await axios.get(`${apiUrl}/services`);
       setServices(response.data);
     } catch (error) {
@@ -268,7 +270,7 @@ function Landing() {
                       <div>
                         <p className="text-gray-500 text-sm">Starting from</p>
                         <p className="text-4xl font-bold text-blue-600">
-                          ${service.price}
+                          {formatPrice(service.price)}
                         </p>
                       </div>
                       <div className="text-5xl text-blue-200">→</div>
@@ -527,9 +529,9 @@ function Landing() {
             <h3 className="text-white font-bold text-lg mb-6">Quick Links</h3>
             <ul className="space-y-3">
               <li><a href="#services" className="text-gray-400 hover:text-green-500 transition">Services</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-green-500 transition">Gallery</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-green-500 transition">Pricing</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-green-500 transition">Contact</a></li>
+              <li><a href="#services" className="text-gray-400 hover:text-green-500 transition">Gallery</a></li>
+              <li><a href="#services" className="text-gray-400 hover:text-green-500 transition">Pricing</a></li>
+              <li><a href="#services" className="text-gray-400 hover:text-green-500 transition">Contact</a></li>
             </ul>
           </div>
           <div>
@@ -556,8 +558,8 @@ function Landing() {
         <div className="max-w-7xl mx-auto border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400">&copy; 2024 AUTO HYBRID SERVICE CENTRE. All rights reserved.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-green-500 transition">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-green-500 transition">Terms of Service</a>
+            <a href="#services" className="text-gray-400 hover:text-green-500 transition">Privacy Policy</a>
+            <a href="#services" className="text-gray-400 hover:text-green-500 transition">Terms of Service</a>
           </div>
         </div>
       </footer>
