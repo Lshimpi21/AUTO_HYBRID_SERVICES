@@ -3,19 +3,6 @@ import axios from 'axios';
 import { FaShoppingCart } from 'react-icons/fa';
 import './ServiceCatalog.css';
 
-const fallbackServices = [
-  { id: '1', name: 'Engine Oil Change', category: 'Maintenance', price: 1500, duration: '30-45 mins', description: 'Professional engine oil and filter replacement', image: '', icon: '🛢️' },
-  { id: '2', name: 'Brake Pad Replacement', category: 'Maintenance', price: 2500, duration: '1 hour', description: 'Premium brake pad replacement for safety', image: '', icon: '🛑' },
-  { id: '3', name: 'Wheel Alignment', category: 'Maintenance', price: 500, duration: '45 mins', description: 'Professional wheel alignment service', image: '', icon: '📐' },
-  { id: '4', name: 'AC Gas Refill', category: 'Cooling', price: 2500, duration: '30-45 mins', description: 'AC refrigerant refill for cooling comfort', image: '', icon: '❄️' },
-  { id: '5', name: 'Battery Check & Service', category: 'Electrical', price: 200, duration: '15 mins', description: 'Complete battery health check and maintenance', image: '', icon: '🔋' },
-  { id: '6', name: 'Car Wash', category: 'Detailing', price: 500, duration: '45 mins', description: 'Professional car wash and dry', image: '', icon: '💦' },
-  { id: '7', name: 'Dent Removal', category: 'Bodywork', price: 1500, duration: '1-2 hours', description: 'Expert dent removal per panel', image: '', icon: '🎯' },
-  { id: '8', name: 'Headlight Replacement', category: 'Electrical', price: 1100, duration: '30-45 mins', description: 'LED/HID headlight replacement service', image: '', icon: '💡' },
-  { id: '9', name: 'Fuel Filter Replacement', category: 'Maintenance', price: 1200, duration: '20-30 mins', description: 'Fuel filter replacement for better efficiency', image: '', icon: '⛽' },
-  { id: '10', name: 'Interior Cleaning', category: 'Detailing', price: 2000, duration: '1-2 hours', description: 'Deep interior car cleaning service', image: '', icon: '🧹' },
-];
-
 function ServiceCatalog({ cart, setCart }) {
   const formatPrice = (price) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(price) || 0);
 
@@ -24,7 +11,6 @@ function ServiceCatalog({ cart, setCart }) {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [categories, setCategories] = useState([]);
-  const [fetchError, setFetchError] = useState('');
 
   const fetchServices = useCallback(async () => {
     try {
@@ -35,10 +21,9 @@ function ServiceCatalog({ cart, setCart }) {
       setCategories([...new Set(topServices.map(s => s.category))]);
     } catch (error) {
       console.error('Error fetching services:', error);
-      setFetchError('Unable to load services from the server. Showing default service list.');
-      setServices(fallbackServices);
-      setFilteredServices(fallbackServices);
-      setCategories([...new Set(fallbackServices.map(s => s.category))]);
+      setServices([]);
+      setFilteredServices([]);
+      setCategories([]);
     } finally {
       setLoading(false);
     }
@@ -69,7 +54,6 @@ function ServiceCatalog({ cart, setCart }) {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col gap-3 mb-8">
           <h1 className="text-4xl font-bold">Our Services</h1>
-          {fetchError && <p className="text-sm text-red-600">{fetchError}</p>}
         </div>
 
         {/* Category Filter */}

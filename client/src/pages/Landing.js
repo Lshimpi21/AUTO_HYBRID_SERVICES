@@ -550,9 +550,7 @@ function Landing() {
               </p>
               <p className="text-gray-400">
                 <span className="font-semibold text-white">Hours:</span><br/>
-                Mon-Fri: 8AM - 8PM<br/>
-                Sat: 9AM - 5PM<br/>
-                Sun: Closed
+                Mon-Sun: 8AM - 10PM
               </p>
             </div>
           </div>
