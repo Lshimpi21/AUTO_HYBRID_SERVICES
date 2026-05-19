@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { FaTools, FaShoppingCart, FaHome, FaCog, FaMapMarkerAlt } from 'react-icons/fa';
 import Landing from './pages/Landing';
@@ -20,6 +21,11 @@ function App() {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [adminPasswordInput, setAdminPasswordInput] = useState('');
   const [adminError, setAdminError] = useState('');
+
+  useEffect(() => {
+    const apiUrl = window.API_BASE_URL || '/api';
+    axios.post(`${apiUrl}/metrics/visit`).catch((err) => console.error('Visitor metric failed', err));
+  }, []);
 
   const handleAdminButton = () => {
     if (isAdmin) {

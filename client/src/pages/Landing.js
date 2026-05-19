@@ -27,8 +27,10 @@ function Landing() {
   };
 
   const handleWhatsAppClick = (serviceName) => {
+    const apiUrl = window.API_BASE_URL || '/api';
+    axios.post(`${apiUrl}/metrics/whatsapp`).catch((err) => console.error('WhatsApp metric failed', err));
     const phoneNumber = '919834446217';
-    const message = `Hi! I'm interested in Car Inquiry service. Could you provide more details?`;
+    const message = `Hi! I'm interested in ${serviceName}. Could you provide more details?`;
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };

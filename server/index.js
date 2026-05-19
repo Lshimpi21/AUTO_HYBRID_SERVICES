@@ -3,6 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -20,6 +21,122 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // In-memory storage
 let orders = [];
+let SERVICES = [];
+let metrics = { visitCount: 0, whatsappClicks: 0 };
+
+const dataDir = path.join(__dirname, 'data');
+const servicesCsvPath = path.join(dataDir, 'services.csv');
+const metricsFilePath = path.join(dataDir, 'metrics.json');
+
+const quoteCsv = (value) => {
+  const stringValue = value == null ? '' : String(value);
+  return `"${stringValue.replace(/"/g, '""')}"`;
+};
+
+const parseCsv = (raw) => {
+  const lines = raw.trim().split('\n');
+  const rows = lines.slice(1);
+  return rows.map((line) => {
+    const values = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i += 1) {
+      const char = line[i];
+      if (char === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          current += '"';
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (char === ',' && !inQuotes) {
+        values.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    values.push(current);
+
+    const [id, name, category, price, duration, description, image, icon, rating] = values;
+    return {
+      id,
+      name,
+      category,
+      price: Number(price) || 0,
+      duration,
+      description,
+      image,
+      icon,
+      rating: Number(rating) || 0,
+    };
+  });
+};
+
+const servicesToCsv = (items) => {
+  const header = 'id,name,category,price,duration,description,image,icon,rating';
+  const rows = items.map((service) => [
+    quoteCsv(service.id),
+    quoteCsv(service.name),
+    quoteCsv(service.category),
+    service.price,
+    quoteCsv(service.duration),
+    quoteCsv(service.description),
+    quoteCsv(service.image || ''),
+    quoteCsv(service.icon || ''),
+    service.rating || 0,
+  ].join(','));
+  return `${header}\n${rows.join('\n')}`;
+};
+
+const ensureDataDir = async () => {
+  try {
+    await fs.mkdir(dataDir, { recursive: true });
+  } catch (error) {
+    console.error('Failed to create data directory:', error);
+  }
+};
+
+const loadServicesFromFile = async () => {
+  try {
+    const raw = await fs.readFile(servicesCsvPath, 'utf8');
+    return parseCsv(raw);
+  } catch (error) {
+    await ensureDataDir();
+    await fs.writeFile(servicesCsvPath, servicesToCsv(BASE_SERVICES), 'utf8');
+    return BASE_SERVICES;
+  }
+};
+
+const saveServicesToFile = async () => {
+  try {
+    await ensureDataDir();
+    await fs.writeFile(servicesCsvPath, servicesToCsv(SERVICES), 'utf8');
+  } catch (error) {
+    console.error('Failed to save services file:', error);
+  }
+};
+
+const loadMetricsFromFile = async () => {
+  try {
+    const raw = await fs.readFile(metricsFilePath, 'utf8');
+    return JSON.parse(raw);
+  } catch (error) {
+    await ensureDataDir();
+    await fs.writeFile(metricsFilePath, JSON.stringify(metrics, null, 2), 'utf8');
+    return metrics;
+  }
+};
+
+const saveMetricsToFile = async () => {
+  try {
+    await ensureDataDir();
+    await fs.writeFile(metricsFilePath, JSON.stringify(metrics, null, 2), 'utf8');
+  } catch (error) {
+    console.error('Failed to save metrics file:', error);
+  }
+};
 
 // Comprehensive services data with pricing
 const BASE_SERVICES = [
@@ -101,40 +218,8 @@ const BASE_SERVICES = [
   { id: '53', name: 'Central Locking Installation', category: 'Accessories', price: 4000, duration: '1-2 hours', description: 'Central locking system setup', icon: '🔒', rating: 4.8 },
 ];
 
-// Function to generate 1000 services
-function generateServices1000() {
-  const services = [];
-  let id = 1;
-  const carBrands = ['Maruti Suzuki', 'Hyundai', 'Honda', 'Tata', 'Toyota', 'Mahindra', 'Ford', 'Skoda', 'Volkswagen', 'BMW', 'Audi', 'Mercedes', 'Kia', 'Jeep', 'MG'];
-  const serviceTypes = ['Premium', 'Budget', 'Standard', 'Express', 'Economy', 'Luxury', 'Professional', 'Elite', 'Classic', 'Advanced'];
-  
-  // Generate variations for each base service
-  BASE_SERVICES.forEach(baseService => {
-    for (let i = 0; i < 19; i++) {
-      const carBrand = carBrands[i % carBrands.length];
-      const serviceType = serviceTypes[i % serviceTypes.length];
-      const priceMultiplier = 0.7 + (i * 0.08);
-      
-      services.push({
-        id: String(id++),
-        name: `${baseService.name} - ${carBrand}`,
-        category: baseService.category,
-        price: Math.round(baseService.price * priceMultiplier),
-        duration: baseService.duration,
-        description: `${serviceType} ${baseService.description} for ${carBrand}`,
-        icon: baseService.icon,
-        rating: Math.min(4.9, 4.5 + Math.random() * 0.4),
-        carBrand,
-        serviceType,
-        reviews: Math.floor(Math.random() * 100) + 5,
-      });
-    }
-  });
-  
-  return services;
-}
-
-const SERVICES = generateServices1000();
+// Load services from the CSV data file or fallback to default services.
+// Services are persisted back to services.csv when added, edited, or removed.
 
 // API Routes - Services
 app.get('/api/services', (req, res) => {
@@ -150,30 +235,50 @@ app.get('/api/services/:id', (req, res) => {
   }
 });
 
-app.post('/api/services', (req, res) => {
-  const service = { id: Date.now().toString(), ...req.body };
+app.post('/api/services', async (req, res) => {
+  const service = { id: Date.now().toString(), ...req.body, price: Number(req.body.price) || 0 };
   SERVICES.push(service);
+  await saveServicesToFile();
   res.json(service);
 });
 
-app.put('/api/services/:id', (req, res) => {
+app.put('/api/services/:id', async (req, res) => {
   const index = SERVICES.findIndex(s => s.id === req.params.id);
   if (index !== -1) {
-    SERVICES[index] = { ...SERVICES[index], ...req.body };
+    SERVICES[index] = { ...SERVICES[index], ...req.body, price: Number(req.body.price) || SERVICES[index].price };
+    await saveServicesToFile();
     res.json({ success: true, service: SERVICES[index] });
   } else {
     res.status(404).json({ error: 'Service not found' });
   }
 });
 
-app.delete('/api/services/:id', (req, res) => {
+app.delete('/api/services/:id', async (req, res) => {
   const index = SERVICES.findIndex(s => s.id === req.params.id);
   if (index !== -1) {
     SERVICES.splice(index, 1);
+    await saveServicesToFile();
     res.json({ success: true });
   } else {
     res.status(404).json({ error: 'Service not found' });
   }
+});
+
+// Metrics
+app.get('/api/metrics', (req, res) => {
+  res.json(metrics);
+});
+
+app.post('/api/metrics/visit', async (req, res) => {
+  metrics.visitCount += 1;
+  await saveMetricsToFile();
+  res.json(metrics);
+});
+
+app.post('/api/metrics/whatsapp', async (req, res) => {
+  metrics.whatsappClicks += 1;
+  await saveMetricsToFile();
+  res.json(metrics);
 });
 
 // API Routes - Orders
@@ -198,11 +303,19 @@ app.put('/api/orders/:id', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date(), servicesCount: SERVICES.length });
+  res.json({ status: 'ok', timestamp: new Date(), servicesCount: SERVICES.length, metrics });
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
-  console.log(`📊 Total Services: ${SERVICES.length}`);
-  console.log(`🔗 API: http://localhost:${PORT}/api/services`);
-});
+const initServer = async () => {
+  SERVICES = await loadServicesFromFile();
+  metrics = await loadMetricsFromFile();
+
+  app.listen(PORT, () => {
+    console.log(`✅ Server running on port ${PORT}`);
+    console.log(`📊 Total Services: ${SERVICES.length}`);
+    console.log(`📈 Visit Count: ${metrics.visitCount}, WhatsApp Clicks: ${metrics.whatsappClicks}`);
+    console.log(`🔗 API: http://localhost:${PORT}/api/services`);
+  });
+};
+
+initServer();
