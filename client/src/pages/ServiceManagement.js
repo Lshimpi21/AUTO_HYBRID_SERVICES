@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { FaEdit, FaTrash, FaPlus, FaCheckCircle } from 'react-icons/fa';
 
@@ -19,13 +19,10 @@ function ServiceManagement() {
     image: ''
   });
 
-  useEffect(() => {
-    fetchServices();
-  }, []);
+  const apiUrl = window.API_BASE_URL || '/api';
 
-  const fetchServices = async () => {
+  const fetchServices = useCallback(async () => {
     try {
-      const apiUrl = window.API_BASE_URL || '/api';
       const response = await axios.get(`${apiUrl}/services`);
       setServices(response.data);
     } catch (error) {
@@ -33,7 +30,11 @@ function ServiceManagement() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
+
+  useEffect(() => {
+    fetchServices();
+  }, [fetchServices]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,7 +61,6 @@ function ServiceManagement() {
     }
 
     try {
-      const apiUrl = window.API_BASE_URL || '/api';
       const payload = { ...formData, price: Number(formData.price) || 0 };
       if (editingId) {
         await axios.put(`${apiUrl}/services/${editingId}`, payload);
@@ -89,7 +89,6 @@ function ServiceManagement() {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this service?')) {
       try {
-        const apiUrl = window.API_BASE_URL || 'http://localhost:5000/api';
         await axios.delete(`${apiUrl}/services/${id}`);
         fetchServices();
       } catch (error) {

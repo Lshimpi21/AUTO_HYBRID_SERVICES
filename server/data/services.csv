@@ -1,0 +1,54 @@
+id,name,category,price,duration,description,image,icon,rating
+"1","Engine Oil Change","General Maintenance",1500,"30-45 mins","Professional engine oil and filter replacement with quality oil","","🛢️",4.8
+"2","Air Filter Replacement","General Maintenance",600,"15-20 mins","Fresh air filter installation for optimal engine performance","","💨",4.7
+"3","Fuel Filter Replacement","General Maintenance",1200,"20-30 mins","Quality fuel filter replacement for better fuel efficiency","","⛽",4.6
+"4","Coolant Service","General Maintenance",1500,"30-45 mins","Coolant flush and refill for engine cooling efficiency","","❄️",4.8
+"5","Battery Check & Service","General Maintenance",200,"15 mins","Complete battery health check and maintenance","","🔋",4.5
+"6","General Vehicle Inspection","General Maintenance",500,"30-45 mins","Comprehensive vehicle inspection and diagnostics","","🔍",4.9
+"7","Engine Tuning","Engine Repairs",2200,"1-2 hours","Expert engine tuning for optimal performance","","🎚️",4.7
+"8","Spark Plug Replacement","Engine Repairs",1200,"45-60 mins","Quality spark plug replacement and installation","","✨",4.6
+"9","Timing Belt Replacement","Engine Repairs",5500,"2-3 hours","Critical timing belt replacement service","","⏱️",4.8
+"10","Head Gasket Repair","Engine Repairs",16500,"4-6 hours","Professional head gasket repair and replacement","","🔧",4.7
+"11","Engine Overhaul","Engine Repairs",50000,"1-2 days","Complete engine overhaul and restoration","","🏗️",4.9
+"12","Injector Cleaning","Engine Repairs",2500,"1-2 hours","Professional fuel injector cleaning service","","💧",4.6
+"13","Clutch Plate Replacement","Transmission",8000,"2-3 hours","Quality clutch plate replacement and adjustment","","⚙️",4.8
+"14","Gearbox Oil Change","Transmission",2000,"45-60 mins","Premium gearbox oil change service","","🛢️",4.7
+"15","Automatic Transmission Service","Transmission",10000,"2-3 hours","Complete automatic transmission servicing","","🚗",4.8
+"16","Gearbox Repair","Transmission",25000,"4-8 hours","Expert gearbox repair and restoration","","🔩",4.9
+"17","Brake Pad Replacement","Brake System",2500,"1 hour","Premium brake pad replacement for safety","","🛑",4.8
+"18","Brake Disc Replacement","Brake System",6500,"2-3 hours","Quality brake disc replacement service","","💿",4.7
+"19","Brake Oil Change","Brake System",600,"30-45 mins","Fresh brake fluid replacement","","🔴",4.6
+"20","Brake Inspection","Brake System",350,"20-30 mins","Complete brake system inspection","","✅",4.9
+"21","Shock Absorber Replacement","Suspension",7500,"1-2 hours","Premium shock absorber replacement","","🌊",4.7
+"22","Wheel Alignment","Suspension",500,"45 mins","Professional wheel alignment service","","📐",4.8
+"23","Wheel Balancing","Suspension",400,"30 mins","Precision wheel balancing","","⚖️",4.6
+"24","Power Steering Repair","Suspension",6000,"2-3 hours","Expert power steering repair","","🎯",4.7
+"25","Battery Replacement","Electrical",6500,"30 mins","Quality car battery replacement","","🔋",4.8
+"26","Alternator Repair","Electrical",4500,"2-3 hours","Professional alternator repair service","","⚡",4.7
+"27","Starter Motor Repair","Electrical",3200,"1-2 hours","Starter motor repair and replacement","","🚀",4.6
+"28","Wiring Repair","Electrical",2500,"1-3 hours","Electrical wiring repair and diagnostics","","🔌",4.7
+"29","Headlight Replacement","Electrical",1100,"30-45 mins","LED/HID headlight replacement","","💡",4.8
+"30","AC Gas Refill","AC & Cooling",2500,"30-45 mins","Professional AC refrigerant refill","","❄️",4.8
+"31","AC Compressor Repair","AC & Cooling",12500,"2-4 hours","AC compressor repair and replacement","","🧊",4.7
+"32","Radiator Repair","AC & Cooling",5000,"1-2 hours","Radiator repair and flushing","","🌡️",4.6
+"33","Cooling Fan Replacement","AC & Cooling",2750,"1-2 hours","Cooling fan replacement service","","🌀",4.7
+"34","Dent Removal","Bodywork",1500,"1-2 hours","Professional dent removal per panel","","🎯",4.8
+"35","Full Body Painting","Bodywork",50000,"2-3 days","Complete vehicle repainting service","","🎨",4.9
+"36","Scratch Removal","Bodywork",1500,"1 hour","Expert scratch removal and touch-up","","✏️",4.7
+"37","Bumper Repair","Bodywork",2500,"1-2 hours","Bumper repair and restoration","","🛡️",4.6
+"38","Car Wash","Detailing",500,"45 mins","Professional car wash and dry","","💦",4.7
+"39","Interior Cleaning","Detailing",2000,"1-2 hours","Deep interior cleaning service","","🧹",4.8
+"40","Full Vehicle Detailing","Detailing",6000,"3-4 hours","Complete exterior and interior detailing","","✨",4.9
+"41","Ceramic Coating","Detailing",30000,"4-6 hours","Premium ceramic paint protection coating","","🛡️",4.9
+"42","Tyre Replacement","Tyres",6000,"1 hour","Premium tyre replacement per tyre","","🛞",4.8
+"43","Puncture Repair","Tyres",200,"20-30 mins","Quick puncture repair service","","🔧",4.7
+"44","Nitrogen Filling","Tyres",120,"15 mins","Nitrogen gas filling for tyres","","💨",4.6
+"45","Tyre Rotation","Tyres",500,"45 mins","Professional tyre rotation service","","🔄",4.7
+"46","ECU Diagnostics","Advanced Services",1200,"30-45 mins","Engine Control Unit diagnostics","","💻",4.8
+"47","Vehicle Scanning","Advanced Services",600,"30 mins","Complete vehicle diagnostic scan","","📊",4.7
+"48","Turbo Repair","Advanced Services",25000,"3-6 hours","Turbocharger repair and replacement","","💨",4.8
+"49","Hybrid System Check","Advanced Services",5000,"1-2 hours","Hybrid vehicle system diagnostics","","🔋",4.9
+"50","Reverse Camera Installation","Accessories",5000,"1-2 hours","Professional reverse camera setup","","📹",4.7
+"51","Music System Installation","Accessories",10000,"2-3 hours","Premium audio system installation","","🎵",4.8
+"52","Seat Cover Fitting","Accessories",5000,"1-2 hours","Custom seat cover installation","","💺",4.7
+"53","Central Locking Installation","Accessories",4000,"1-2 hours","Central locking system setup","","🔒",4.8
