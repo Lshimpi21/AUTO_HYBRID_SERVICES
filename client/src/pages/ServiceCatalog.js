@@ -35,7 +35,7 @@ function ServiceCatalog({ cart, setCart }) {
       setCategories([...new Set(topServices.map(s => s.category))]);
     } catch (error) {
       console.error('Error fetching services:', error);
-      setFetchError('Unable to load services from the server. Showing default service list.');
+      setFetchError('');
       setServices(fallbackServices);
       setFilteredServices(fallbackServices);
       setCategories([...new Set(fallbackServices.map(s => s.category))]);
