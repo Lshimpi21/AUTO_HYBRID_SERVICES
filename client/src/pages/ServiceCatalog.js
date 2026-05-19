@@ -19,10 +19,11 @@ function ServiceCatalog({ cart, setCart }) {
     try {
       const apiUrl = window.API_BASE_URL || '/api';
       const response = await axios.get(`${apiUrl}/services`);
-      setServices(response.data);
-      setFilteredServices(response.data);
+      const topServices = response.data.slice(0, 10);
+      setServices(topServices);
+      setFilteredServices(topServices);
 
-      const uniqueCategories = [...new Set(response.data.map(s => s.category))];
+      const uniqueCategories = [...new Set(topServices.map(s => s.category))];
       setCategories(uniqueCategories);
     } catch (error) {
       console.error('Error fetching services:', error);
