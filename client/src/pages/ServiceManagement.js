@@ -55,13 +55,14 @@ function ServiceManagement() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.price || !formData.category) {
-      alert('Please fill in all required fields');
+    const priceValue = Number(formData.price);
+    if (!formData.name || formData.category === '' || formData.price === '' || Number.isNaN(priceValue)) {
+      alert('Please fill in all required fields with valid values');
       return;
     }
 
     try {
-      const payload = { ...formData, price: Number(formData.price) || 0 };
+      const payload = { ...formData, price: priceValue };
       if (editingId) {
         await axios.put(`${apiUrl}/services/${editingId}`, payload);
       } else {
@@ -75,11 +76,11 @@ function ServiceManagement() {
       setShowForm(false);
       fetchServices();
     } catch (error) {
-      alert('Error saving service');
+      const message = error.response?.data?.error || error.message;
+      alert(`Error saving service: ${message}`);
       console.error('Error:', error);
     }
   };
-
   const handleEdit = (service) => {
     setFormData(service);
     setEditingId(service.id);

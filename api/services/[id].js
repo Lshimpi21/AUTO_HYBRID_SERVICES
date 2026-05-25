@@ -27,21 +27,22 @@ export default function handler(req, res) {
       res.status(200).json(services[serviceIndex]);
     } else if (req.method === 'PUT') {
       const { name, description, price, category, duration, image, icon, rating } = req.body;
+      const priceValue = Number(price);
 
-      if (!name || price === undefined || !category) {
-        return res.status(400).json({ error: 'Missing required fields: name, price, category' });
+      if (!name || !category || price === undefined || price === null || price === '' || Number.isNaN(priceValue)) {
+        return res.status(400).json({ error: 'Missing or invalid required fields: name, price, category' });
       }
 
       services[serviceIndex] = {
         ...services[serviceIndex],
         name,
         description: description || '',
-        price: Number(price),
+        price: priceValue,
         category,
         duration: duration || services[serviceIndex].duration,
         image: image || services[serviceIndex].image || '',
         icon: icon || services[serviceIndex].icon || '🔧',
-        rating: rating !== undefined ? Number(rating) : services[serviceIndex].rating,
+        rating: rating !== undefined && rating !== null ? Number(rating) : services[serviceIndex].rating,
       };
 
       res.status(200).json(services[serviceIndex]);

@@ -23,20 +23,21 @@ export default function handler(req, res) {
     // Add new service
     else if (req.method === 'POST') {
       const { name, description, price, category, duration, icon, rating } = req.body;
-      
-      if (!name || !price || !category) {
-        return res.status(400).json({ error: 'Missing required fields: name, price, category' });
+      const priceValue = Number(price);
+
+      if (!name || !category || price === undefined || price === null || price === '' || Number.isNaN(priceValue)) {
+        return res.status(400).json({ error: 'Missing or invalid required fields: name, price, category' });
       }
-      
+
       const newService = {
         id: Date.now().toString(),
         name,
         description: description || '',
-        price: Number(price),
+        price: priceValue,
         category,
         duration: duration || '',
         icon: icon || '🔧',
-        rating: rating ? Number(rating) : 4.5,
+        rating: rating !== undefined && rating !== null ? Number(rating) : 4.5,
       };
       services.push(newService);
       res.status(201).json(newService);
