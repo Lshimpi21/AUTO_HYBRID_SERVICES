@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaPhone, FaStar, FaCheckCircle, FaTools, FaClock, FaMapMarkerAlt, FaWrench, FaTrophy, FaEnvelope } from 'react-icons/fa';
+import { FaPhone, FaStar, FaCheckCircle, FaTools, FaClock, FaMapMarkerAlt, FaWrench, FaTrophy, FaEnvelope, FaCarSide } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa';
 import './Landing.css';
 
@@ -87,8 +87,11 @@ function Landing() {
         </div>
         
         <div className="hero-content-enhanced relative z-10 max-w-5xl mx-auto text-center px-4">
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 text-white drop-shadow-lg">
-            AUTO HYBRID SERVICE CENTRE
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 text-violet-200 drop-shadow-lg">
+            <span className="inline-flex items-center gap-3">
+              <FaCarSide className="text-white" />
+              AUTO HYBRID SERVICE SHOP
+            </span>
           </h1>
           <p className="text-2xl md:text-3xl text-blue-100 mb-8 drop-shadow-lg font-semibold">
             Expert Mechanics. Quality Guaranteed. Your Trust, Our Priority.

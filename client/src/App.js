@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { FaTools, FaShoppingCart, FaHome, FaCog, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaCarSide, FaTools, FaShoppingCart, FaHome, FaCog, FaMapMarkerAlt } from 'react-icons/fa';
 import Landing from './pages/Landing';
 import ServiceCatalog from './pages/ServiceCatalog';
 import ServiceManagement from './pages/ServiceManagement';
@@ -55,11 +55,11 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-50">
         {/* Navigation Bar */}
-        <nav className="bg-blue-900 text-white shadow-lg sticky top-0 z-50">
+        <nav className="bg-violet-950 text-white shadow-lg sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex justify-between items-center h-16">
-              <Link to="/" className="flex items-center gap-2 text-2xl font-bold hover:text-blue-200">
-                <FaTools /> AUTO HYBRID SERVICE CENTRE
+              <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-violet-200 hover:text-violet-100">
+                <FaCarSide /> AUTO HYBRID SERVICE SHOP
               </Link>
 
               <div className="hidden md:flex gap-8">
